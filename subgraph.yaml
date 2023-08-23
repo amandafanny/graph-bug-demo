@@ -1,6 +1,12 @@
 specVersion: 0.0.5
+description: Wrap for Ethereum
 schema:
   file: ./schema.graphql
+features:
+  - fullTextSearch
+  - nonFatalErrors
+  - grafting
+  - ipfsOnEthereumContracts
 dataSources:
   - kind: ethereum
     name: Pass
@@ -14,38 +20,17 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Approval
-        - ApprovalForAll
-        - CallExecuted
-        - Mint
-        - Paused
-        - RoleAdminChanged
-        - RoleGranted
-        - RoleRevoked
-        - Transfer
-        - Unpaused
+        - Pass
       abis:
         - name: Pass
           file: ./abis/Pass.json
+      # mapping—./src/mapping.ts
       eventHandlers:
-        - event: Approval(indexed address,indexed address,indexed uint256)
-          handler: handleApproval
-        - event: ApprovalForAll(indexed address,indexed address,bool)
-          handler: handleApprovalForAll
-        - event: CallExecuted(indexed address,uint256,bytes)
-          handler: handleCallExecuted
         - event: Mint(indexed address,indexed uint256,indexed string)
           handler: handleMint
-        - event: Paused(address)
-          handler: handlePaused
-        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
-          handler: handleRoleAdminChanged
-        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleGranted
-        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
-          handler: handleRoleRevoked
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-        - event: Unpaused(address)
-          handler: handleUnpaused
+      # callHandlers:
+      # - function: mint(string)
+      #   handler: handleMint
       file: ./src/pass.ts
